@@ -1,59 +1,36 @@
+name: Build & Deploy Flutter Web
+
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
-name: "Build and Release Flutter App"
+      - main   # شغّل الـ Workflow عند أي دفع على فرع main
+
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
+
     steps:
-      # 1️⃣ احضر الكود من المستودع
+      # 1️⃣ اسحب الكود
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
 
       # 2️⃣ ثبّت Flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.3'   # ضع نسخة Flutter التي تستخدمها
+          flutter-version: '3.35.3' # أو نسختك الحالية
 
-      # 3️⃣ احصل على الحزم
+      # 3️⃣ جلب الحزم
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Flutter
-        run: flutter --version
+      # 4️⃣ بناء نسخة الويب
+      - name: Build Flutter Web
+        run: flutter build web --release
 
-      # 4️⃣ شغّل الاختبارات (اختياري لكن مهم)
-      - name: Run tests
-        run: flutter test
-
-      # 5️⃣ ابْنِ ملف الـ APK
-      - name: Build APK
-        run: flutter build apk --release --split-per-abi
-
-      # 6️⃣ احفظ ملف الـ APK كـ Artifact لتتمكن من تنزيله من صفحة الـ Actions
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      # 5️⃣ نشر على GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: app-release
-          path: build/app/outputs/flutter-apk/*.apk
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: build/app/outputs/flutter-apk/*.apk
-          tag_name: v${{ github.run_number }}
-          name: "Release v${{ github.run_number }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/web
