@@ -6,7 +6,6 @@ import 'package:my_portfolio/pages/home_page.dart';
 void main() {
   testWidgets('HomePage loads and shows main elements', (WidgetTester tester) async {
     // بناء التطبيق
-    // MyApp
     await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle(); // انتظار انتهاء أي animations أو async tasks
 
