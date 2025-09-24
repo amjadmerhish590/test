@@ -31,25 +31,31 @@ class ProjectCardWidget extends StatelessWidget {
           ),
 
           // title
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 15, 12, 12),
-            child: Text(
-              project.title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                color: CustomColor.whitePrimary,
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 15, 12, 12),
+              child: Text(
+                project.title,
+                softWrap: true,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: CustomColor.whitePrimary,
+                ),
               ),
             ),
           ),
 
           // subtitle
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-            child: Text(
-              project.subtitle,
-              style: const TextStyle(
-                fontSize: 12,
-                color: CustomColor.whiteSecondary,
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              child: Text(
+                project.subtitle,
+                softWrap: true,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: CustomColor.whiteSecondary,
+                ),
               ),
             ),
           ),
