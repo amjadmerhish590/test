@@ -86,6 +86,7 @@ class _HomePageState extends State<HomePage> {
             
                     const Text(
                       "What I can do",
+                      key: Key('What I can do'),
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,

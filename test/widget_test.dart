@@ -14,7 +14,7 @@ void main() {
 
     // تحقق من النصوص الفعلية في الصفحة
     // استبدل هذه النصوص بما يعكس المحتوى الحقيقي في HomePage
-    expect(find.text('What I can do'), findsOneWidget);
+    expect(find.byKey(Key('What I can do')), findsOneWidget);
 
 
 
