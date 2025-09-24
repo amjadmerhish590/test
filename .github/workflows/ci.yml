@@ -1,36 +1,26 @@
-name: Build & Deploy Flutter Web
-
+name: Build & Deploy Web
 on:
   push:
-    branches:
-      - main   # شغّل الـ Workflow عند أي دفع على فرع main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write    # 🔑 مهم جداً
     steps:
-      # 1️⃣ اسحب الكود
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      # 2️⃣ ثبّت Flutter
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.3' # أو نسختك الحالية
+          flutter-version: '3.19.0'
 
-      # 3️⃣ جلب الحزم
-      - name: Install dependencies
-        run: flutter pub get
+      - run: flutter build web
 
-      # 4️⃣ بناء نسخة الويب
-      - name: Build Flutter Web
-        run: flutter build web --release
-
-      # 5️⃣ نشر على GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/web
+      - name: Deploy to gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git --work-tree build/web add --all
+          git commit -m "Deploy to gh-pages"
+          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:gh-pages
